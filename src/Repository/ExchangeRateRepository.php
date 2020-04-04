@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\ExchangeRate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +20,21 @@ class ExchangeRateRepository extends ServiceEntityRepository
         parent::__construct($registry, ExchangeRate::class);
     }
 
-    // /**
-    //  * @return ExchangeRate[] Returns an array of ExchangeRate objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function saveRates(ArrayCollection $rates): void
     {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $em = $this->getEntityManager();
 
-    /*
-    public function findOneBySomeField($value): ?ExchangeRate
-    {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        if ($rates->exists(fn($key, $rate) => !$rate instanceof ExchangeRate)) {
+            throw new \RuntimeException('Cannot save rogue Entities');
+        }
+
+        $rates->map(fn(ExchangeRate $rate) => $em->persist($rate));
+
+        $em->flush();
     }
-    */
+
+    public function findLast(): ?ExchangeRate
+    {
+        return $this->findOneBy([], ['date' => 'DESC']);
+    }
 }

@@ -59,4 +59,9 @@ class ExchangeRate
     {
         return $this->date;
     }
+
+    public function isNewer(self $exchangeRate)
+    {
+        return $this->date->format('Y-m-d') > $exchangeRate->getDate()->format('Y-m-d');
+    }
 }
