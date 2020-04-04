@@ -7,7 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ExchangeRateRepository")
- * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="currency_date_idx", columns={"currency", "date"})})
+ * @ORM\Table(
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="currency_date_idx", columns={"currency", "date"})},
+ *     indexes={@ORM\Index(name="date_idx", columns={"date"})}
+ *     )
  */
 class ExchangeRate
 {
