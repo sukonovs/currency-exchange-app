@@ -12,12 +12,10 @@ use Psr\Log\LoggerInterface;
 class RatesImportService
 {
     private BankHttpClientService $http;
-    private LoggerInterface $logger;
 
-    public function __construct(BankHttpClientService $http, LoggerInterface $logger)
+    public function __construct(BankHttpClientService $http)
     {
         $this->http = $http;
-        $this->logger = $logger;
     }
 
     public function importRates(): RatesImport
@@ -27,16 +25,7 @@ class RatesImportService
         try {
             return $this->parseContent($importContent);
         } catch (\Throwable $e) {
-            $this->logger->critical(
-                'Failed to parse RSS content',
-                [
-                    'content' => $importContent,
-                    'exception' => $e->getMessage(),
-                    'trace' => $e->getTrace()
-                ]
-            );
-
-            return new RatesImport(new ArrayCollection());
+            throw new \RuntimeException(sprintf('Failed to parse content: %s', $importContent), 0, $e);
         }
     }
 
