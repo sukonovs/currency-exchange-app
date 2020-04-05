@@ -26,6 +26,10 @@ services:
       - app-network
     ports:
       - 33061:3306
+  node:
+    build: .docker/node/
+    volumes:
+      - .:/var/www/html
 
 volumes:
   mysql-volume:
