@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EUR Rates{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group btn-group-sm mr-2" role="group">
+                    {% for date in dates %}
+                        <a type="button" class="btn btn-secondary" href="{{ path("rates", {date: date.date|date("Y-m-d")}) }}">{{ date.date|date("Y-m-d") }}</a>
+                    {% endfor %}
+                </div>
+                <div class="btn-group btn-group-sm mr-2" role="group">
+                    <a type="button" class="btn btn-secondary" href="{{ path('all-dates') }}">All dates</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-10">
+            <span>Showing EUR Rates {{ limit }} of {{ pagination.totalItemCount }} for day {{ today|date("Y-m-d") }}:</span>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Countries</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Rate</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for currency in pagination %}
+                    <tr>
+                        <td><a href="{{ path('currency', {'currency': currency.currency}) }}">{{ currency.currency|currency_name }}</a></td>
+                        <td>{{ currency.currency|to_countries|raw }}</td>
+                        <td>{{ currency.currency }}</td>
+                        <td>{{ currency.rate }}</td>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+            </table>
+            <br/>
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
+{% endblock %}

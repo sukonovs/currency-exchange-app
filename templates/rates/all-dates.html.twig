@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}All dates{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-4">
+            <span>Displaying last {{ date_limit }} days if available:</span>
+            <ul class="list-group">
+                {% for date in dates %}
+                    <li class="list-group-item">
+                        <a href="{{ path("rates", {date: date.date|date("Y-m-d")}) }}">{{ date.date|date("Y-m-d") }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

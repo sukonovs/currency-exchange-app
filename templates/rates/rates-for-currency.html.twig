@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EUR Rates{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-10">
+            <span>Showing EUR/{{ currency|upper }} ({{ currency|to_countries|raw }}) historical rates:</span>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Rate</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for rate in rates %}
+                <tr>
+                    <td>
+                        <a href="{{ path("rates", {date: rate.date|date("Y-m-d")}) }}">{{ rate.date|date("Y-m-d") }}</a>
+                    </td>
+                    <td>{{ rate.rate }}</td>
+                </tr>
+                </tbody>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
