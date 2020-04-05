@@ -2,14 +2,11 @@
 
 namespace App\Command;
 
-use App\Entity\ExchangeRate;
 use App\Service\FetchFxRatesService;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\HttpClient\HttpClient;
 
 class FetchFxRatesCommand extends Command
 {
