@@ -8,7 +8,11 @@
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group btn-group-sm mr-2" role="group">
                     {% for date in dates %}
-                        <a type="button" class="btn btn-secondary" href="{{ path("rates", {date: date.date|date("Y-m-d")}) }}">{{ date.date|date("Y-m-d") }}</a>
+                        <a type="button"
+                           class="btn btn-secondary {% if today|date("Y-m-d") == date.date|date("Y-m-d") %} active {% endif %}"
+                           href="{{ path("rates", {date: date.date|date("Y-m-d")}) }}">
+                            {{ date.date|date("Y-m-d") }}
+                        </a>
                     {% endfor %}
                 </div>
                 <div class="btn-group btn-group-sm mr-2" role="group">
