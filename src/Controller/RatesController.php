@@ -32,8 +32,14 @@ class RatesController extends AbstractController
      */
     public function allDates()
     {
+        $dates = $this->repo->findDates(static::DATE__LIMIT);
+
+        if (!$dates) {
+            return $this->render('rates/no-rates.html.twig');
+        }
+
         return $this->render('rates/all-dates.html.twig', [
-            'dates' => $this->repo->findDates(static::DATE__LIMIT),
+            'dates' => $dates,
             'date_limit' => static::DATE__LIMIT
         ]);
     }
@@ -76,14 +82,10 @@ class RatesController extends AbstractController
             return $this->render('rates/no-rates.html.twig');
         }
 
-        if ($date === '') {
-            $dt = $lastDate ? $lastDate->getDate() : new \DateTime();
-        } else {
-            try {
-                $dt = new \DateTime($date);
-            } catch (\Throwable $e) {
-                return $this->createNotFoundException();
-            }
+        try {
+            $dt = $date ? new \DateTime($date) : $lastDate->getDate();
+        } catch (\Throwable $e) {
+            return $this->createNotFoundException();
         }
 
         $queryBuilder = $this->repo->getRatesQueryBuilder($dt);
