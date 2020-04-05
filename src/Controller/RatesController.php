@@ -70,9 +70,14 @@ class RatesController extends AbstractController
      */
     public function index(Request $request, string $date = '')
     {
+        $lastDate = $this->repo->findLast();
+
+        if (!$lastDate) {
+            return $this->render('rates/no-rates.html.twig');
+        }
+
         if ($date === '') {
-            $lastDate = $this->repo->findLast();
-            $dt = $lastDate->getDate() ?? new \DateTime();
+            $dt = $lastDate ? $lastDate->getDate() : new \DateTime();
         } else {
             try {
                 $dt = new \DateTime($date);
